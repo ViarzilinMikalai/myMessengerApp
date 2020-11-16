@@ -37,7 +37,7 @@
         beforeMount() {
             if (this.message.link.indexOf('youtu') > -1){
                 this.type = 'youtube'
-            } else if (this.message.link.match(/\.(jpeg|jpg|gif|png)$/)){
+            } else if (this.message.link.match(/\.(jpeg|jpg|gif|png)$/) !== null) {
                 this.type = 'image'
             } else {
                 this.type = 'href'
