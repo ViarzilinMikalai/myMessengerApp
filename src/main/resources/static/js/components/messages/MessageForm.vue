@@ -1,5 +1,5 @@
 <template>
-    <v-layout row>
+    <v-layout row class="px-6">
         <v-text-field
                 label="New message"
                 placeholder="Write something"
@@ -20,7 +20,7 @@
         data() {
             return {
                 text: '',
-                id: ''
+                id: null
             }
         },
         watch: {
@@ -32,19 +32,21 @@
         methods: {
             ...mapActions(['addMessageAction', 'updateMessageAction']),
             save() {
+
                 const message = {
                     id: this.id,
                     text: this.text
                 }
 
                 if (this.id) {
+
                     this.updateMessageAction(message)
                 } else {
                     this.addMessageAction(message)
                 }
 
                 this.text = ''
-                this.id = ''
+                this.id = null
             }
         }
     }

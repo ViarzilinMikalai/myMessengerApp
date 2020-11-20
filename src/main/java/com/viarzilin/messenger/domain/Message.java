@@ -1,27 +1,28 @@
 package com.viarzilin.messenger.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Table
 @ToString(of = {"id", "text"})
-@EqualsAndHashCode(of={"id"})
+@EqualsAndHashCode(of = {"id"})
+@Data
+@JsonIdentityInfo(
+        property = "id",
+        generator = ObjectIdGenerators.PropertyGenerator.class
+)
 public class Message {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(Views.Id.class)
     private Long id;
-
     @JsonView(Views.IdName.class)
     private String text;
 
@@ -37,7 +38,7 @@ public class Message {
 
     @OneToMany(mappedBy = "message", orphanRemoval = true)
     @JsonView(Views.FullMessage.class)
-    private List <Comment> comments;
+    private List<Comment> comments;
 
     @JsonView(Views.FullMessage.class)
     private String link;

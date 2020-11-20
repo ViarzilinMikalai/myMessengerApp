@@ -29,11 +29,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PrincipalExtractor principalExtractor(UserDetailsRepo userDetailsRepo){
+    public PrincipalExtractor principalExtractor(UserDetailsRepo userDetailsRepo) {
         return map -> {
-
             String id = (String) map.get("sub");
-            User user = userDetailsRepo.findById(id).orElseGet(() ->{
+
+            User user = userDetailsRepo.findById(id).orElseGet(() -> {
                 User newUser = new User();
 
                 newUser.setId(id);
@@ -45,7 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 return newUser;
             });
+
             user.setLastVisit(LocalDateTime.now());
+
             return userDetailsRepo.save(user);
         };
     }

@@ -14,7 +14,7 @@
         <v-flex v-if="type === 'image'" xs12 sm6 offset-sm3>
             <a :href="message.link">
                 <v-img v-if="message.linkCover" :aspect-ratio="2.75" :src="message.linkCover"></v-img>
-                {{message.link }}
+                {{message.link}}
             </a>
         </v-flex>
         <v-flex v-if="type === 'youtube'" xs12 sm6 offset-sm3>
@@ -25,17 +25,18 @@
 
 <script>
     import Youtube from './Youtube.vue'
+
     export default {
         name: 'Media',
         components:{Youtube},
         props: ['message'],
-        data(){
+        data() {
             return {
                 type: 'href'
             }
         },
         beforeMount() {
-            if (this.message.link.indexOf('youtu') > -1){
+            if (this.message.link.indexOf('youtu') > -1) {
                 this.type = 'youtube'
             } else if (this.message.link.match(/\.(jpeg|jpg|gif|png)$/) !== null) {
                 this.type = 'image'

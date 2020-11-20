@@ -27,14 +27,13 @@ public class WsSender {
                 .writerWithView(view);
 
         return (EventType eventType, T payload) -> {
-
             String value = null;
+
             try {
                 value = objectWriter.writeValueAsString(payload);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
-
 
             simpMessagingTemplate.convertAndSend(
                     "/topic/activity",

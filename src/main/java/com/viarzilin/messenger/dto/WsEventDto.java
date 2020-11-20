@@ -12,7 +12,6 @@ import lombok.Data;
 public class WsEventDto {
     private ObjectType objectType;
     private EventType eventType;
-
     @JsonRawValue
     private String body;
 }

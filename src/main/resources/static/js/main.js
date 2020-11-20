@@ -11,6 +11,7 @@ import 'vuetify/dist/vuetify.min.css'
 if (frontendData.profile) {
     connect()
 }
+
 Vue.use(Vuetify)
 
 new Vue({

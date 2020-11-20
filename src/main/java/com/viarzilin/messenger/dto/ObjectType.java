@@ -1,5 +1,5 @@
 package com.viarzilin.messenger.dto;
 
 public enum ObjectType {
-    MESSAGE
+    MESSAGE, COMMENT
 }
