@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.viarzilin.messenger.domain.User;
 import com.viarzilin.messenger.domain.Views;
 import com.viarzilin.messenger.dto.MessagePageDto;
+import com.viarzilin.messenger.repo.UserDetailsRepo;
 import com.viarzilin.messenger.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import static com.viarzilin.messenger.controller.MessageController.MESSAGES_PER_PAGE;
 
@@ -25,18 +27,25 @@ import static com.viarzilin.messenger.controller.MessageController.MESSAGES_PER_
 @RequestMapping("/")
 public class MainController {
     private final MessageService messageService;
+    private final UserDetailsRepo userDetailsRepo;
 
     @Value("${spring.profiles.active}")
     private String profile;
-    private final ObjectWriter objectWriter;
+    private final ObjectWriter messageWriter;
+    private final ObjectWriter profileWriter;
 
     @Autowired
-    public MainController(MessageService messageService, ObjectMapper objectMapper) {
+    public MainController(MessageService messageService, UserDetailsRepo userDetailsRepo, ObjectMapper mapper) {
         this.messageService = messageService;
+        this.userDetailsRepo = userDetailsRepo;
 
-        this.objectWriter = objectMapper
-                .setConfig(objectMapper.getSerializationConfig())
+        ObjectMapper objectMapper = mapper
+                .setConfig(mapper.getSerializationConfig());
+        this.messageWriter = objectMapper
                 .writerWithView(Views.FullMessage.class);
+
+        this.profileWriter = objectMapper
+                .writerWithView(Views.FullProfile.class);
     }
 
     @GetMapping
@@ -47,13 +56,16 @@ public class MainController {
         HashMap<Object, Object> data = new HashMap<>();
 
         if (user != null) {
-            data.put("profile", user);
+
+            User userFromDb = userDetailsRepo.findById(user.getId()).get();
+            String serializedProfile = profileWriter.writeValueAsString(userFromDb);
+            model.addAttribute("profile", serializedProfile);
 
             Sort sort = Sort.by(Sort.Direction.DESC, "id");
             PageRequest pageRequest = PageRequest.of(0, MESSAGES_PER_PAGE, sort);
             MessagePageDto messagePageDto = messageService.findAll(pageRequest);
 
-            String messages = objectWriter.writeValueAsString(messagePageDto.getMessages());
+            String messages = messageWriter.writeValueAsString(messagePageDto.getMessages());
 
             model.addAttribute("messages", messages);
 
@@ -61,6 +73,7 @@ public class MainController {
             data.put("totalPages", messagePageDto.getTotalPages());
         } else {
             model.addAttribute("messages", "[]");
+            model.addAttribute("profile", "null");
         }
 
         model.addAttribute("frontendData", data);

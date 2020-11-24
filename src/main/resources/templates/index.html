@@ -9,7 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <script th:inline="javascript">
         let frontendData = [[${frontendData}]];
-        let messages = JSON.parse([[${messages}]]);
+        let messages = [# th:utext="${messages}" /];
+        var profile = [# th:utext="${profile}" /];
+        // let profile = JSON.parse([[${profile}]]);
+
     </script>
 </head>
 <body>

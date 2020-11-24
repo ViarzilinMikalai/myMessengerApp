@@ -55,11 +55,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.session</groupId>-->
+<!--            <artifactId>spring-session-jdbc</artifactId>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-jdbc</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
@@ -73,23 +76,5 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/org.webjars.npm/vue -->
-<!--        <dependency>-->
-<!--            <groupId>org.webjars.bower</groupId>-->
-<!--            <artifactId>vue</artifactId>-->
-<!--            <version>2.6.9</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.webjars.npm</groupId>-->
-<!--            <artifactId>vue-resource</artifactId>-->
-<!--            <version>1.5.1</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.webjars.npm</groupId>-->
-<!--            <artifactId>vue-template-compiler</artifactId>-->
-<!--            <version>2.6.11</version>-->
-<!--        </dependency>-->
     </dependencies>
 </project>
