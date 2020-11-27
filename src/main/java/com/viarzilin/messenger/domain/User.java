@@ -39,14 +39,12 @@ public class User implements Serializable {
     @JsonView(Views.FullProfile.class)
     private LocalDateTime lastVisit;
 
-
     @JsonView(Views.FullProfile.class)
     @OneToMany(
             mappedBy = "subscriber",
             orphanRemoval = true
     )
     private Set<UserSubscription> subscriptions = new HashSet<>();
-
 
     @JsonView(Views.FullProfile.class)
     @OneToMany(
