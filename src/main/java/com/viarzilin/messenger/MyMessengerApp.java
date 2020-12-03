@@ -1,5 +1,6 @@
 package com.viarzilin.messenger;
 
+import io.sentry.Sentry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MyMessengerApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(MyMessengerApp.class, args);
+        Sentry.capture("Application started");
+        SpringApplication.run(MyMessengerApp.class, args)
+        ;
     }
 
 }

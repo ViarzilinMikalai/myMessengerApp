@@ -44,7 +44,7 @@ public class MessageService {
     public MessageService(MessageRepo messageRepo, UserSubscriptionRepo userSubscriptionRepo, WsSender wsSender) {
         this.messageRepo = messageRepo;
         this.userSubscriptionRepo = userSubscriptionRepo;
-        this.wsSender = wsSender.getSender(ObjectType.MESSAGE, Views.IdName.class);
+        this.wsSender = wsSender.getSender(ObjectType.MESSAGE, Views.FullMessage.class);
     }
 
 
@@ -95,16 +95,12 @@ public class MessageService {
     }
 
     public Message updateMessage(Message message, Message messageFromDb) throws IOException {
-
-//        BeanUtils.copyProperties(message, messageFromDb, "id");
-        messageFromDb.setId(message.getId());
         messageFromDb.setText(message.getText());
 
         fillMeta(messageFromDb);
         Message updatedMessage = messageRepo.save(messageFromDb);
 
         wsSender.accept(EventType.UPDATE, updatedMessage);
-
         return updatedMessage;
     }
 
@@ -123,6 +119,7 @@ public class MessageService {
 
         List<User> channels = userSubscriptionRepo.findBySubscriber(user)
                 .stream()
+                .filter(UserSubscription::isActive)
                 .map(UserSubscription::getChannel)
                 .collect(Collectors.toList());
         channels.add(user);

@@ -2,11 +2,14 @@ package com.viarzilin.messenger.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.viarzilin.messenger.domain.User;
+import com.viarzilin.messenger.domain.UserSubscription;
 import com.viarzilin.messenger.domain.Views;
 import com.viarzilin.messenger.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("profile")
@@ -18,11 +21,13 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
+
     @GetMapping("{id}")
     @JsonView(Views.FullProfile.class)
     public User get(@PathVariable("id") User user){
         return user;
     }
+
 
     @PostMapping("change-subscription/{channelId}")
     @JsonView(Views.FullProfile.class)
@@ -37,4 +42,19 @@ public class ProfileController {
         }
     }
 
+    @GetMapping("get-subscribers/{channelId}")
+    @JsonView(Views.IdName.class)
+    public List<UserSubscription> subscribers(
+            @PathVariable("channelId") User channel
+    ){
+        return profileService.getSubscribers(channel);
+    }
+
+    @PostMapping("change-status/{subscriberId}")
+    @JsonView(Views.IdName.class)
+    public UserSubscription changeSubscriptionStatus(
+            @AuthenticationPrincipal User userChannel,
+            @PathVariable("subscriberId") User subscriber){
+        return profileService.changeSubscriptionStatus(userChannel, subscriber);
+    }
 }
