@@ -1,0 +1,87 @@
+//apply plugin: 'java'
+//apply plugin: 'maven'
+//
+//group = 'com.viarzilin.messenger'
+//version = '1.0-SNAPSHOT'
+//
+//description = """"""
+//
+//sourceCompatibility = 14
+//targetCompatibility = 14
+//tasks.withType(JavaCompile) {
+//	options.encoding = 'UTF-8'
+//}
+//
+//
+//
+//repositories {
+//
+//     maven { url "https://repo.maven.apache.org/maven2" }
+//}
+//dependencies {
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'2.3.2.RELEASE'
+//    compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version:'2.3.2.RELEASE'
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version:'2.3.2.RELEASE'
+//    compile group: 'org.postgresql', name: 'postgresql', version:'42.2.14'
+//    compile group: 'org.projectlombok', name: 'lombok', version:'1.18.12'
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.3.2.RELEASE'
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version:'2.3.2.RELEASE'
+//    compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version:'2.1.0.RELEASE'
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version:'2.3.2.RELEASE'
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version:'2.3.2.RELEASE'
+//    compile group: 'org.jsoup', name: 'jsoup', version:'1.13.1'
+//    compile group: 'io.sentry', name: 'sentry-spring', version:'1.7.30'
+//    compile group: 'com.github.eirslett', name: 'frontend-maven-plugin', version:'1.10.4'
+//}
+//
+
+buildscript {
+    ext {
+        springBootVersion = '2.3.2.RELEASE'
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id "com.moowork.node" version "1.3.1"
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.viarzilin.messenger'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = 14
+
+
+task buildFront(type: YarnTask) {
+    args = ['build']
+}
+
+yarn_install.dependsOn(yarn_cache_clean)
+buildFront.dependsOn(yarn_install)
+processResources.dependsOn(buildFront)
+
+repositories {
+    maven { url "https://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    runtime('org.springframework.boot:spring-boot-devtools')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-starter-websocket")
+    compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.0.RELEASE')
+    compile('org.postgresql:postgresql')
+    compile 'org.jsoup:jsoup:1.11.3'
+    compile('org.projectlombok:lombok')
+    compile 'io.sentry:sentry-spring:1.7.16'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}

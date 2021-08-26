@@ -8,9 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MyMessengerApp {
 
     public static void main(String[] args) {
-        Sentry.capture("Application started");
-        SpringApplication.run(MyMessengerApp.class, args)
-        ;
+        SpringApplication.run(MyMessengerApp.class, args);
+
     }
 
 }
